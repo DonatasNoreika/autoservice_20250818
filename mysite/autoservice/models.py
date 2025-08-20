@@ -35,7 +35,7 @@ class Order(models.Model):
     def total(self):
         total = 0
         for line in self.lines.all():
-            total += line.service.price * line.quantity
+            total += line.line_sum()
         return total
 
 
