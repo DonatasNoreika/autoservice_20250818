@@ -9,6 +9,11 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Paslauga"
+        verbose_name_plural = "Paslaugos"
+
+
 class Car(models.Model):
     make = models.CharField()
     model = models.CharField()
@@ -19,17 +24,39 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.make} {self.model}"
 
+    class Meta:
+        verbose_name = "Automobilis"
+        verbose_name_plural = "Automobiliai"
+
 class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     car = models.ForeignKey(to="Car", on_delete=models.SET_NULL, null=True, blank=True)
 
+    def total(self):
+        total = 0
+        for line in self.lines.all():
+            total += line.service.price * line.quantity
+        return total
+
+
     def __str__(self):
         return f"{self.car} - {self.date}"
 
+    class Meta:
+        verbose_name = "Užsakymas"
+        verbose_name_plural = "Užsakymai"
+
 class OrderLine(models.Model):
-    order = models.ForeignKey(to="Order", on_delete=models.CASCADE)
+    order = models.ForeignKey(to="Order", on_delete=models.CASCADE, related_name='lines')
     service = models.ForeignKey(to="Service", on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField(default=1)
 
+    def line_sum(self):
+        return self.service.price * self.quantity
+
     def __str__(self):
         return f"{self.service} ({self.service.price}) - {self.quantity}"
+
+    class Meta:
+        verbose_name = "Eilutė"
+        verbose_name_plural = "Eilutės"
