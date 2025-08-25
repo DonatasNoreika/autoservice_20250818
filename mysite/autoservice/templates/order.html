@@ -8,5 +8,30 @@
     <li><strong>Data: </strong>{{ order.date }}</li>
     <li><strong>Automobilis: </strong>{{ order.car }}</li>
     <li><strong>Būsena: </strong>{{ order.get_status_display }}</li>
-  </ul>
+</ul>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Paslauga</th>
+        <th>Kaina</th>
+        <th>Kiekis</th>
+        <th>Suma</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for line in order.lines.all %}
+    <tr>
+        <td>{{ line.service.name }}</td>
+        <td>{{ line.service.price }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.line_sum }}</td>
+    </tr>
+{% endfor %}
+    <tr>
+        <td colspan="3"><b>Bendra suma</b></td>
+        <td>{{ order.total }}</td>
+    </tr>
+    </tbody>
+</table>
 {% endblock %}
