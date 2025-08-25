@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block "title" %}Užsakymas{% endblock %}
+
+{% block "content" %}
+<h1>Užsakymas Nr. {{ order.pk }}</h1>
+<ul>
+    <li><strong>Data: </strong>{{ order.date }}</li>
+    <li><strong>Automobilis: </strong>{{ order.car }}</li>
+    <li><strong>Būsena: </strong>{{ order.get_status_display }}</li>
+  </ul>
+{% endblock %}
