@@ -13,3 +13,6 @@ def index(request):
 
 def cars(request):
     return render(request, template_name="cars.html", context={'cars': Car.objects.all()})
+
+def car(request, car_id):
+    return render(request, template_name="car.html", context={'car': Car.objects.get(pk=car_id)})
