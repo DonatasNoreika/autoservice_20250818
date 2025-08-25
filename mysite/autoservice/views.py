@@ -10,3 +10,6 @@ def index(request):
     }
     return render(request, template_name="index.html", context=context)
 
+
+def cars(request):
+    return render(request, template_name="cars.html", context={'cars': Car.objects.all()})
