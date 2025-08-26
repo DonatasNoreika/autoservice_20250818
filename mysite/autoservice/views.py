@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
-
+from django.core.paginator import Paginator
 from .models import Service, Order, Car
 
 # Create your views here.
@@ -14,7 +14,11 @@ def index(request):
 
 
 def cars(request):
-    return render(request, template_name="cars.html", context={'cars': Car.objects.all()})
+    cars = Car.objects.all()
+    paginator = Paginator(cars, per_page=5)
+    page_number = request.GET.get('page')
+    paged_cars = paginator.get_page(page_number)
+    return render(request, template_name="cars.html", context={'cars': paged_cars})
 
 def car(request, car_id):
     return render(request, template_name="car.html", context={'car': Car.objects.get(pk=car_id)})

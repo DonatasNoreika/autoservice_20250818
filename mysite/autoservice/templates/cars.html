@@ -7,4 +7,24 @@
 {% for car in cars %}
 <p><a href="{% url 'car' car.pk %}">{{ car }}</a></p>
 {% endfor %}
+
+{% if cars.has_other_pages %}
+<div class="container">
+    <nav aria-label="...">
+            <ul class="pagination pagination-sm justify-content-center">
+                {% for i in cars.paginator.page_range %}
+                    {% if cars.number == i %}
+                        <li class="page-item active">
+                            <a class="page-link">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+    </nav>
+</div>
+{% endif %}
 {% endblock %}
