@@ -3,27 +3,42 @@
 {% block "title" %}Automobiliai{% endblock %}
 
 {% block "content" %}
+{% load static %}
 <h1>Automobiliai:</h1>
-{% for car in cars %}
-<p><a href="{% url 'car' car.pk %}">{{ car }}</a></p>
-{% endfor %}
+<div class="row">
+    {% for car in cars %}
+    <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card mb-4 shadow-sm" style="width:300px">
+            {% if car.photo %}
+            <img src="{{ car.photo.url }}" class="card-img-top" alt="...">
+            {% else %}
+            <img src="{% static 'img/auto-no-image.jpg' %}" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{ car }}</h6>
+                <p class="card-text"><a href="{% url 'car' car.pk %}">{{ car.license_plate }}</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
 {% if cars.has_other_pages %}
 <div class="container">
     <nav aria-label="...">
-            <ul class="pagination pagination-sm justify-content-center">
-                {% for i in cars.paginator.page_range %}
-                    {% if cars.number == i %}
-                        <li class="page-item active">
-                            <a class="page-link">{{ i }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+        <ul class="pagination pagination-sm justify-content-center">
+            {% for i in cars.paginator.page_range %}
+            {% if cars.number == i %}
+            <li class="page-item active">
+                <a class="page-link">{{ i }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
     </nav>
 </div>
 {% endif %}
