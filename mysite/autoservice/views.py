@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.core.paginator import Paginator
 from .models import Service, Order, Car
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -12,6 +13,19 @@ def index(request):
     }
     return render(request, template_name="index.html", context=context)
 
+
+def search(request):
+    query = request.GET.get('query')
+
+    cars_search_results = Car.objects.filter(
+        Q(make__icontains=query) | Q(model__icontains=query) | Q(license_plate__icontains=query) | Q(
+            vin_code__icontains=query) | Q(client_name__icontains=query))
+
+    context = {
+        "query": query,
+        "cars": cars_search_results,
+    }
+    return render(request, template_name="search.html", context=context)
 
 def cars(request):
     cars = Car.objects.all()
