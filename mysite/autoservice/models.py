@@ -33,6 +33,7 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     car = models.ForeignKey(to="Car", on_delete=models.SET_NULL, null=True, blank=True)
     client = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
 
     ORDER_STATUS = (
         ('c', 'Created'),
