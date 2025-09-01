@@ -9,4 +9,5 @@
     <li><strong>VIN kodas: </strong>{{ car.vin_code }}</li>
     <li><strong>Klientas: </strong>{{ car.client_name }}</li>
   </ul>
+<p>{{ car.description|safe }}</p>
 {% endblock %}
