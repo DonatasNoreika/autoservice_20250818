@@ -6,7 +6,7 @@
 <h1>Užsakymas Nr. {{ order.pk }}</h1>
 <ul>
     <li><strong>Data: </strong>{{ order.date }}</li>
-    <li><strong>Automobilis: </strong>{{ order.car }}</li>
+    <li><strong>Grąžinimas: </strong><span class="{% if order.is_overdue %}text-danger{% endif %}">{{ order.deadline }}</span></li>
     <li><strong>Būsena: </strong>{{ order.get_status_display }}</li>
     <li><strong>Klientas: </strong>{{ order.client.username }}</li>
 </ul>

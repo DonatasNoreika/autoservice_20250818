@@ -5,6 +5,6 @@
 {% block "content" %}
 <h1>Mano Užsakymai:</h1>
 {% for order in orders %}
-<p><a href="{% url 'order' order.pk %}">{{ order }}</a></p>
+<p><a href="{% url 'order' order.pk %}" class="{% if order.is_overdue %}text-danger{% endif %}">{{ order }}</a></p>
 {% endfor %}
 {% endblock %}
