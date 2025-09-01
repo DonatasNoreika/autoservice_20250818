@@ -8,6 +8,7 @@
     <li><strong>Data: </strong>{{ order.date }}</li>
     <li><strong>Automobilis: </strong>{{ order.car }}</li>
     <li><strong>Būsena: </strong>{{ order.get_status_display }}</li>
+    <li><strong>Klientas: </strong>{{ order.client.username }}</li>
 </ul>
 
 <table class="table table-hover">

@@ -3,6 +3,7 @@ from django.views import generic
 from django.core.paginator import Paginator
 from .models import Service, Order, Car
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def index(request):
@@ -51,3 +52,13 @@ class OrderDetailView(generic.DetailView):
     model = Order
     template_name = "order.html"
     context_object_name = 'order'
+
+
+class UserOrderListView(LoginRequiredMixin, generic.ListView):
+    model = Order
+    template_name = "user_orders.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        return Order.objects.filter(client=self.request.user)
+
