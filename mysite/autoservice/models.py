@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Service(models.Model):
@@ -44,6 +45,8 @@ class Order(models.Model):
 
     status = models.CharField(verbose_name="Status", choices=ORDER_STATUS, max_length=1, blank=True, default='c')
 
+    def is_overdue(self):
+        return self.deadline and timezone.now() > self.deadline
 
     def total(self):
         total = 0
