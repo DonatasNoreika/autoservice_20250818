@@ -35,4 +35,19 @@
     </tr>
     </tbody>
 </table>
+<h4>Komentarai:</h4>
+{% if user.is_authenticated %}
+<h2>Palikite atsiliepimą</h2>
+<form method="post" class="mb-2">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    {{ form | crispy }}
+    <button type="submit" class="btn btn-primary">Paskelbti</button>
+</form>
+{% endif %}
+{% for review in order.reviews.all %}
+<hr>
+<small>{{ review.author }}, {{ review.date_created }}</small>
+<p>{{ review.content }}</p>
+{% endfor %}
 {% endblock %}
