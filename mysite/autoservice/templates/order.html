@@ -8,7 +8,10 @@
     <li><strong>Data: </strong>{{ order.date }}</li>
     <li><strong>Grąžinimas: </strong><span class="{% if order.is_overdue %}text-danger{% endif %}">{{ order.deadline }}</span></li>
     <li><strong>Būsena: </strong>{{ order.get_status_display }}</li>
-    <li><strong>Klientas: </strong>{{ order.client.username }}</li>
+    <li><strong>Klientas: </strong>
+        <img class="rounded-circle account-img" style="width: 25px" src="{{ order.client.photo.url }}">
+        {{ order.client.username }}
+    </li>
 </ul>
 
 <table class="table table-hover">
@@ -47,7 +50,10 @@
 {% endif %}
 {% for review in order.reviews.all %}
 <hr>
-<small>{{ review.author }}, {{ review.date_created }}</small>
+<small>
+    <img class="rounded-circle account-img" style="width: 25px" src="{{ review.author.photo.url }}">
+    {{ review.author }}, {{ review.date_created }}
+</small>
 <p>{{ review.content }}</p>
 {% endfor %}
 {% endblock %}
