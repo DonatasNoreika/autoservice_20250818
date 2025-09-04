@@ -3,23 +3,22 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from tinymce.models import HTMLField
 from django.contrib.auth.models import AbstractUser
+from PIL import Image
 
 class CustomUser(AbstractUser):
     photo = models.ImageField(default="profile_pics/default.png", upload_to="profile_pics")
-    # groups = models.ManyToManyField(
-    #     'auth.Group',
-    #     related_name='customuser_set',
-    #     blank=True,
-    #     help_text='The groups this user belongs to.',
-    #     verbose_name='groups'
-    # )
-    # user_permissions = models.ManyToManyField(
-    #     'auth.Permission',
-    #     related_name='customuser_set',
-    #     blank=True,
-    #     help_text='Specific permissions for this user.',
-    #     verbose_name='user permissions'
-    # )
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.photo.path)
+        min_side = min(img.width, img.height)
+        left = (img.width - min_side) // 2
+        top = (img.height - min_side) // 2
+        right = left + min_side
+        bottom = top + min_side
+        img = img.crop((left, top, right, bottom))
+        img = img.resize((300, 300), Image.LANCZOS)
+        img.save(self.photo.path)
 
 class Service(models.Model):
     name = models.CharField()

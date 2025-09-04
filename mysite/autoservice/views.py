@@ -1,13 +1,14 @@
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from django.core.paginator import Paginator
-from .models import Service, Order, Car
+from .models import Service, Order, Car, CustomUser
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormMixin
-from .forms import OrderReviewForm, CustomUserCreateForm
+from .forms import OrderReviewForm, CustomUserCreateForm, CustomUserChangeForm
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.urls import reverse_lazy
 
 # Create your views here.
 def index(request):
@@ -92,3 +93,14 @@ def signup(request):
         messages.info(request, "Vartotojas registruotas")
         return redirect('login')
     return render(request, 'signup.html', context={"form": form})
+
+
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = CustomUser
+    form_class = CustomUserChangeForm
+    template_name = 'profile.html'
+    success_url = reverse_lazy('profile')
+    context_object_name = "user"
+
+    def get_object(self, queryset=None):
+        return self.request.user
