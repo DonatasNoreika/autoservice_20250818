@@ -5,8 +5,8 @@ from .models import Service, Order, Car
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormMixin
-from .forms import OrderReviewForm
-from django.contrib.auth.forms import UserCreationForm
+from .forms import OrderReviewForm, CustomUserCreateForm
+# from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 # Create your views here.
@@ -86,7 +86,7 @@ class UserOrderListView(LoginRequiredMixin, generic.ListView):
         return Order.objects.filter(client=self.request.user)
 
 def signup(request):
-    form = UserCreationForm(request.POST or None)
+    form = CustomUserCreateForm(request.POST or None)
     if form.is_valid():
         form.save()
         messages.info(request, "Vartotojas registruotas")

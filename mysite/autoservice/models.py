@@ -2,8 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from tinymce.models import HTMLField
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
+class CustomUser(AbstractUser):
+    photo = models.ImageField(default="profile_pics/default.png", upload_to="profile_pics")
+    # groups = models.ManyToManyField(
+    #     'auth.Group',
+    #     related_name='customuser_set',
+    #     blank=True,
+    #     help_text='The groups this user belongs to.',
+    #     verbose_name='groups'
+    # )
+    # user_permissions = models.ManyToManyField(
+    #     'auth.Permission',
+    #     related_name='customuser_set',
+    #     blank=True,
+    #     help_text='Specific permissions for this user.',
+    #     verbose_name='user permissions'
+    # )
+
 class Service(models.Model):
     name = models.CharField()
     price = models.FloatField()
@@ -35,7 +52,7 @@ class Car(models.Model):
 class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     car = models.ForeignKey(to="Car", on_delete=models.SET_NULL, null=True, blank=True)
-    client = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, blank=True)
+    client = models.ForeignKey(to="autoservice.CustomUser", on_delete=models.SET_NULL, null=True, blank=True, related_name="client")
     deadline = models.DateTimeField(null=True, blank=True)
 
     ORDER_STATUS = (
@@ -82,7 +99,7 @@ class OrderLine(models.Model):
 
 class OrderReview(models.Model):
     order = models.ForeignKey(to="Order", on_delete=models.CASCADE, related_name="reviews")
-    author = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    author = models.ForeignKey(to="autoservice.CustomUser", on_delete=models.CASCADE, related_name="author")
     content = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
 
