@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, redirect
 from django.views import generic
 from django.core.paginator import Paginator
-from .models import Service, Order, Car, CustomUser
+from .models import Service, Order, Car, CustomUser, OrderLine
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import FormMixin
@@ -143,3 +143,22 @@ class UserOrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.Delet
 
     def test_func(self):
         return self.get_object().client == self.request.user
+
+class OrderLineCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = OrderLine
+    template_name = 'orderline_form.html'
+    fields = ['service', 'quantity']
+
+    def get_success_url(self):
+        return reverse("order", kwargs={"pk": self.kwargs['pk']})
+
+    def test_func(self):
+        return Order.objects.get(pk=self.kwargs['pk']).client == self.request.user
+
+    def form_valid(self, form):
+        form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
+        form.save()
+        return super().form_valid(form)
+
+
+
