@@ -111,7 +111,8 @@ class UserOrderListView(LoginRequiredMixin, generic.ListView):
 class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
     model = Order
     template_name = "order_form.html"
-    fields = ['car', 'deadline']
+    # fields = ['car', 'deadline']
+    form_class = OrderCreateUpdateForm
     success_url = reverse_lazy('userorders')
 
     def form_valid(self, form):
@@ -133,3 +134,12 @@ class UserOrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Updat
     def test_func(self):
         return self.get_object().client == self.request.user
 
+
+class UserOrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Order
+    template_name = "order_delete.html"
+    context_object_name = "order"
+    success_url = reverse_lazy('userorders')
+
+    def test_func(self):
+        return self.get_object().client == self.request.user
