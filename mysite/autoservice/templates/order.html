@@ -13,6 +13,11 @@
         {{ order.client.username }}
     </li>
 </ul>
+{% if order.client == user %}
+<div>
+    <a class="btn btn-secondary" href="{% url 'orders_edit' order.pk %}">Redaguoti</a>
+</div>
+{% endif %}
 
 <table class="table table-hover">
     <thead>

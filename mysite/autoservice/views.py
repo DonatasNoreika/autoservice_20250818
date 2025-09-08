@@ -3,9 +3,9 @@ from django.views import generic
 from django.core.paginator import Paginator
 from .models import Service, Order, Car, CustomUser
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import FormMixin
-from .forms import OrderReviewForm, CustomUserCreateForm, CustomUserChangeForm
+from .forms import OrderReviewForm, CustomUserCreateForm, CustomUserChangeForm, OrderCreateUpdateForm
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -118,4 +118,18 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
         form.instance.client = self.request.user
         form.save()
         return super().form_valid(form)
+
+
+class UserOrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Order
+    template_name = "order_form.html"
+    # fields = ['car', 'deadline']
+    form_class = OrderCreateUpdateForm
+    # success_url = reverse_lazy('userorders')
+
+    def get_success_url(self):
+        return reverse("order", kwargs={"pk": self.object.pk})
+
+    def test_func(self):
+        return self.get_object().client == self.request.user
 
