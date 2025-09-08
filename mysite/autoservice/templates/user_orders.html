@@ -4,6 +4,9 @@
 
 {% block "content" %}
 <h1>Mano Užsakymai:</h1>
+<div>
+    <a class="btn btn-secondary mb-2" href="{% url 'orders_create' %}">Naujas užsakymas</a>
+</div>
 {% for order in orders %}
 <p><a href="{% url 'order' order.pk %}" class="{% if order.is_overdue %}text-danger{% endif %}">{{ order }}</a></p>
 {% endfor %}

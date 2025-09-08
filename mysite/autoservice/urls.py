@@ -6,9 +6,10 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('cars/', views.cars, name="cars"),
     path('cars/<int:car_id>', views.car, name="car"),
-    path('orders/', views.OrderListView.as_view(), name="orders"),
-    path('orders/<int:pk>', views.OrderDetailView.as_view(), name="order"),
-    path('userorders/', views.UserOrderListView.as_view(), name="userorders"),
     path('signup/', views.signup, name="signup"),
     path('profile/', views.ProfileUpdateView.as_view(), name="profile"),
+    path('orders/<int:pk>', views.OrderDetailView.as_view(), name="order"),
+    path('orders/', views.OrderListView.as_view(), name="orders"),
+    path('userorders/', views.UserOrderListView.as_view(), name="userorders"),
+    path('userorders/create', views.UserOrderCreateView.as_view(), name="orders_create"),
 ]
