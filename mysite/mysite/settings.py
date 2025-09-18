@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from .my_settings import SECRET_KEY, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, DEBUG, ALLOWED_HOSTS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,19 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6$nwsm=51=@@cuf1f)_7=d@)kvoo&o)3ufibkghqmchi*o2)&^'
+SECRET_KEY = SECRET_KEY
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_POST = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'mano_pastas@gmail.com'
-EMAIL_HOST_PASSWORD = 'VerySecret'
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS
 
 
 # Application definition
